@@ -2,6 +2,8 @@
 scalacOptions ++= Seq("pdeprecation")
 addSbtPlugin("org.scalameta" % "sbt-scalafmt" % "2.4.2")
 addSbtPlugin("org.scalameta" % "sbt-mdoc" % "2.2.21")
+addSbtPlugin("com.timushev.sbt" % "sbt-updates" % "0.5.3")
+
 
 
 // for binary compatibility

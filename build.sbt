@@ -8,8 +8,6 @@ inThisBuild(
     organization := "dev.110416",
     description := "template repository for scala 3 projects",
     scalacOptions ++= Seq(
-      "-Ywarn-unused-import",
-      "-Ywarn-adapted-args",
       "-deprecation"
     ),
     licenses := Seq(

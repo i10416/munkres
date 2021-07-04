@@ -2,7 +2,7 @@ import sbt._
 
 object Dependencies {
     val scalaTestVersion = "3.2.9"
-    val http4sVersion = "0.22.0-RC1"
+    val http4sVersion = "0.23.0-RC1"
     def deps = Seq(
       "org.http4s" %% "http4s-core" % http4sVersion,
       "org.http4s" %% "http4s-dsl" % http4sVersion,
