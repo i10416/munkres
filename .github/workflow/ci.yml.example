@@ -1,0 +1,30 @@
+name: CI
+
+on:
+  push:
+
+jobs:
+  test:
+    runs-on: ubuntu-18.04
+    strategy:
+      java: [8,11]
+    steps:
+      - uses: actions/checkout@v2
+      - uses: laughedelic/coursier-setup@v1
+        with:
+          jvm: ${{ matrix.java }}
+          apps: sbt-launcher
+      - name: Test on Java 8
+        if: matrix.java == 8
+        run: >
+          sbt
+          scalafmtCheckAll
+          test
+      - name: Test on Java 11
+        if: matrix.java == 11
+        run: >
+          sbt 
+          scalafmtCheckAll
+          test
+
+
