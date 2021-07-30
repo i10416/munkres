@@ -4,9 +4,9 @@ val scala213 = "2.13.6"
 
 inThisBuild(
   Seq(
-    homepage := Some(url("https://github.com/ItoYo16u/scala3-template")),
+    homepage := Some(url("https://github.com/ItoYo16u/munkres")),
     organization := "dev.110416",
-    description := "template repository for scala 3 projects",
+    description := "Munkres Algorithm implementation for Scala",
     scalacOptions ++= Seq(
       "-deprecation"
     ),
@@ -21,7 +21,7 @@ inThisBuild(
 lazy val root = project
     .in(file("."))
     .settings(
-      name := "scala-3-template",
+      name := "scala-munkres",
       version := "0.1.0-SNAPSHOT",
       scalaVersion := scala3Version,
       libraryDependencies ++= Dependencies.deps
