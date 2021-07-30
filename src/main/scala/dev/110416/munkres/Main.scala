@@ -6,7 +6,6 @@ package dev.`110416`.munkres
   * For more detail, visit
   *   - https://csclab.murraystate.edu/~bob.pilgrim/445/munkres.html
   *   - https://github.com/bmc/munkres
-  * 
   */
 object Munkres:
 
@@ -14,10 +13,9 @@ object Munkres:
     import math.Ordering.Implicits.infixOrderingOps
     import scala.reflect.ClassTag
 
-    trait FiniteRange[T] {
+    trait FiniteRange[T]:
         def maxValue: T
         def minValue: T
-    }
 
     given FiniteRange[Float] with
         def maxValue = Float.MaxValue
@@ -33,25 +31,25 @@ object Munkres:
 
     type Matrix[T] = Array[Array[T]]
     def utility[T : FiniteRange : Numeric](matrix: Matrix[T]): T = ???
-    
+
     def cost[T : Numeric : FiniteRange : ClassTag](matrix: Matrix[T]): T =
         minimize(matrix).foldLeft(Numeric[T].zero) { case (acc, (x, y)) =>
             acc + matrix(x)(y)
         }
-    /** return the combination that maximizes total utility*/
+
+    /** return the combination that maximizes total utility */
     def maximize[T : FiniteRange : ClassTag : Numeric](matrix: Matrix[T]): Seq[(Int, Int)] = ???
 
-    /** returns the combination that minimizes total cost*/
-    def minimize[T : FiniteRange : ClassTag : Numeric](matrix: Matrix[T]): Seq[(Int, Int)] = {
-        val colSize = if (matrix.isEmpty || matrix.head.isEmpty) 0 else matrix.head.length
-        val rowSize = if (matrix.isEmpty) 0 else matrix.length
+    /** returns the combination that minimizes total cost */
+    def minimize[T : FiniteRange : ClassTag : Numeric](matrix: Matrix[T]): Seq[(Int, Int)] =
+        val colSize = if matrix.isEmpty || matrix.head.isEmpty then 0 else matrix.head.length
+        val rowSize = if matrix.isEmpty then 0 else matrix.length
         // todo: if(colSize==rowSize)
         //       else ...
         val m = subtractMinsFromMatrix(matrix)
         val zeros = selectZerosFromMatrix(m)
 
         collectZerosFromMatrixRec(m, zeros, rowSize, colSize)
-    }
 
     /// return minimum values of each row as an array
     private def selectMinsFromRow[T : Numeric : ClassTag](matrix: Matrix[T]): Array[T] =
@@ -63,18 +61,18 @@ object Munkres:
         matrix.foldLeft(Array.fill[T](matrix.length)(summon[FiniteRange[T]].maxValue)) {
             (mins, row) =>
                 row.zip(mins).map { (value, maybeMin) =>
-                    if (value < maybeMin) value else maybeMin
+                    if value < maybeMin then value else maybeMin
                 }
         }
     /// find all locations of zero as (row index,column index): (Int,Int)
     private def selectZerosFromMatrix[T: Numeric](matrix: Matrix[T]): Set[(Int, Int)] =
         matrix.zipWithIndex.flatMap { (row, rowIdx) =>
             row.zipWithIndex.foldLeft(Set(): Set[(Int, Int)]) { case (acc, (value, colIdx)) =>
-                if (value == 0.0) {
+                if (value == 0.0)
                     acc + ((rowIdx, colIdx))
-                } else {
+                else
                     acc
-                }
+
             }
         }.toSet
     /// find the locations where horizontal lines are crossed with vertical ones.
@@ -91,17 +89,15 @@ object Munkres:
         mat: Array[Array[T]],
         rowLines: Seq[Int],
         colLines: Seq[Int]
-    ): Map[(Int, Int), T] = {
+    ): Map[(Int, Int), T] =
         mat.zipWithIndex.foldLeft(Map(): Map[(Int, Int), T]) { case (acc, (row, rowIdx)) =>
             row.zipWithIndex.foldLeft(acc) { case (m, (value, colIdx)) =>
-                if (rowLines.contains(rowIdx) || colLines.contains(colIdx)) {
+                if (rowLines.contains(rowIdx) || colLines.contains(colIdx))
                     m
-                } else {
+                else
                     m.updated((rowIdx, colIdx), value)
-                }
             }
         }
-    }
 
     // First, subtract the smallest value in a row from the each element of the row. Then, subtract
     // the smallest value in a column from each element of the column.
@@ -122,19 +118,18 @@ object Munkres:
         result: (Seq[Int], Seq[Int]) = (Seq(), Seq())
     ): (Seq[Int], Seq[Int]) =
         if (zeros.isEmpty) return result
-        getTheLineToHide(zeros) match {
+        getTheLineToHide(zeros) match
             case (Some((rowIdx, locationsInRow)), Some((colIdx, locationsInCol))) =>
-                result match {
+                result match
                     case (Nil, seq) => (rowIdx +: Nil, seq)
                     case (seq, Nil) => (seq, colIdx +: Nil)
                     case _          => (rowIdx +: result._1, result._2)
-                }
             case (Some((rowIdx, locations)), None) =>
                 hideZerosByLines(n - 1, zeros.diff(locations), (rowIdx +: result._1, result._2))
             case (None, Some((colIdx, locations))) =>
                 hideZerosByLines(n - 1, zeros.diff(locations), (result._1, colIdx +: result._2))
             case _ => result
-        }
+
     private def sortZeros(
         zeros: Set[(Int, Int)]
     ): (Seq[(Int, Set[(Int, Int)])], Seq[(Int, Set[(Int, Int)])]) = {
@@ -148,19 +143,18 @@ object Munkres:
         zeros: Set[(Int, Int)],
         horizontal: Set[(Int, Int)],
         vertical: Set[(Int, Int)]
-    ) = {
+    ) =
         val remainingIndependentZeroWhenHideRow =
             zeros.diff(horizontal).groupBy(_._1).filter(_._2.size == 1).size
         val remainingIndependentZeroWhenHideCol =
             zeros.diff(vertical).groupBy(_._1).filter(_._2.size == 1).size
         remainingIndependentZeroWhenHideRow <= remainingIndependentZeroWhenHideCol
 
-    }
     /// find the line which hides the largest amount of zeros.
     private def getTheLineToHide(
         zeros: Set[(Int, Int)]
-    ): (Option[(Int, Set[(Int, Int)])], Option[(Int, Set[(Int, Int)])]) = {
-        sortZeros(zeros) match {
+    ): (Option[(Int, Set[(Int, Int)])], Option[(Int, Set[(Int, Int)])]) =
+        sortZeros(zeros) match
             case ((rowIdx, horizontal) +: tail1, Nil) =>
                 (Some(rowIdx, horizontal), None)
             case (Nil, (colIdx, vertical) +: tail2) => (None, Some(colIdx, vertical))
@@ -173,8 +167,6 @@ object Munkres:
             case ((rowIdx, horizontal) +: tail1, (colIdx, vertical) +: tail2) =>
                 (None, Some(colIdx, vertical))
             case (Nil, Nil) => (None, None)
-        }
-    }
 
     private def collectZerosFromMatrixRec[T: Numeric](
         m: Matrix[T],
@@ -182,7 +174,7 @@ object Munkres:
         rowCount: Int,
         colCount: Int
     ): Seq[(Int, Int)] = {
-        tryCollectZerosFromMatrix(zeros, rowCount, colCount) match {
+        tryCollectZerosFromMatrix(zeros, rowCount, colCount) match
             case Right(result) => result
             case Left(lines) =>
                 val (hidedRows, hidedCols) = hideZerosByLines(lines, zeros)
@@ -200,7 +192,7 @@ object Munkres:
                 }
                 val nextZoros = selectZerosFromMatrix(next)
                 collectZerosFromMatrixRec(next, nextZoros, rowCount, colCount)
-        }
+
     }
     /// select zeros from identical (row,col), without using the same row or col more than once.
     /// when right, return the locations where valid zeros exist. otherwise,returns the max line number available to hide zeros.
@@ -208,20 +200,17 @@ object Munkres:
         zeros: Set[(Int, Int)],
         rowCount: Int,
         colCount: Int
-    ): Either[Int, Seq[(Int, Int)]] = {
+    ): Either[Int, Seq[(Int, Int)]] =
         val collect = zeros.foldLeft((Seq(), Seq()): (Seq[Int], Seq[Int])) {
             case ((row, col), (x, y)) =>
-                if (!row.contains(x) && !col.contains(y)) {
-                    (row appended x, col appended y)
-                } else {
-                    (row, col)
-                }
+                if !row.contains(x) && !col.contains(y) then (row appended x, col appended y)
+                else (row, col)
+
         }
-        collect match {
+        collect match
             case (row, col) if row.length >= rowCount && col.length >= colCount =>
                 Right(row.zip(col).map { case (r, c) => (r, c) })
             case (row, col) => Left(row.length)
-        }
-    }
+
     /// transform N x M Matrix into N' x N' Matrix (where N' = max(N,M)) by padding with zeros
     def padRectangle(matrix: Matrix[Double]): Matrix[Double] = ???
