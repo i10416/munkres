@@ -1,5 +1,8 @@
 ## Munkres(Hangarian) Algorithm Implimentation for Scala
 
+> The Hungarian method is a combinatorial optimization algorithm that solves the assignment problem in polynomial time and which anticipated later primal–dual methods. It was developed and published in 1955 by Harold Kuhn, who gave the name "Hungarian method" because the algorithm was largely based on the earlier works of two Hungarian mathematicians: Dénes Kőnig and Jenő Egerváry.
+>
+> https://en.wikipedia.org/wiki/Hungarian_algorithm
 ## Usage
 
 ```scala
@@ -18,3 +21,7 @@ cost(m)
 
 ## TODO
 - add padding
+
+## License
+Licensed under the Apache License, Version 2.0.
+
