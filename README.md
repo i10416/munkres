@@ -19,9 +19,6 @@ cost(m)
 // 17
 ```
 
-## TODO
-- add padding
-
 ## License
 Licensed under the Apache License, Version 2.0.
 

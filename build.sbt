@@ -14,7 +14,7 @@ inThisBuild(
       "Apache-2.0" -> url("http://www.apache.org/licenses/LICENSE-2.0")
     ),
     versionScheme := Some("early-semver"),
-    crossScalaVersions++= Seq(scala3Version,scala213)
+    crossScalaVersions ++= Seq(scala3Version, scala213)
   )
 )
 

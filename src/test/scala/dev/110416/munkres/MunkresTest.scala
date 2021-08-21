@@ -27,3 +27,20 @@ class MunkresTest extends AnyFlatSpec with Matchers:
     munkres.cost(m1) shouldBe 17.0
     munkres.cost(m2) shouldBe 1685
     munkres.cost(m3) shouldBe 19.5
+    val verticalRect = Array(
+      Array(1.0,1.0),
+      Array(1.0,1.0),
+      Array(1.0,1.0),
+      Array(1.0)
+      )
+    val horizontalRect = Array(
+      Array(1.0,1.0,1.0,1.0,1.0,1.0,1.0),
+      Array(1.0,1.0,1.0,1.0,1.0,1.0),
+    )
+    val afterPadding1 = munkres.padRectangle(verticalRect)
+    val afterPadding2 = munkres.padRectangle(horizontalRect)
+    afterPadding1.length shouldBe 4
+    afterPadding1.forall(row=>row.length==4) shouldBe true
+    afterPadding2.length shouldBe 7
+    afterPadding2.forall(row=>row.length == 7) shouldBe true
+

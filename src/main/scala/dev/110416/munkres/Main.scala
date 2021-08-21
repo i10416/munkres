@@ -1,5 +1,7 @@
 package dev.`110416`.munkres
 
+import scala.annotation.tailrec
+
 /** Munkres Algorithm (also known as Hungarian algorithm or the Kuhn-Munkres algorithm)
   * implementation for Scala
   *
@@ -42,14 +44,12 @@ object Munkres:
 
     /** returns the combination that minimizes total cost */
     def minimize[T : FiniteRange : ClassTag : Numeric](matrix: Matrix[T]): Seq[(Int, Int)] =
-        val colSize = if matrix.isEmpty || matrix.head.isEmpty then 0 else matrix.head.length
-        val rowSize = if matrix.isEmpty then 0 else matrix.length
-        // todo: if(colSize==rowSize)
-        //       else ...
-        val m = subtractMinsFromMatrix(matrix)
+        val normalized = padRectangle(matrix)
+        val n = normalized.length
+        val m = subtractMinsFromMatrix(normalized)
         val zeros = selectZerosFromMatrix(m)
 
-        collectZerosFromMatrixRec(m, zeros, rowSize, colSize)
+        collectZerosFromMatrixRec(m, zeros, n, n)
 
     /// return minimum values of each row as an array
     private def selectMinsFromRow[T : Numeric : ClassTag](matrix: Matrix[T]): Array[T] =
@@ -112,6 +112,7 @@ object Munkres:
         val minsFromCol = selectMinsFromCol(tmpMatrix)
         tmpMatrix.map(row => row.zipWithIndex.map((value, colIdx) => value - minsFromCol(colIdx)))
 
+    @tailrec
     private def hideZerosByLines(
         n: Int,
         zeros: Set[(Int, Int)],
@@ -167,7 +168,7 @@ object Munkres:
             case ((rowIdx, horizontal) +: tail1, (colIdx, vertical) +: tail2) =>
                 (None, Some(colIdx, vertical))
             case (Nil, Nil) => (None, None)
-
+    @tailrec
     private def collectZerosFromMatrixRec[T: Numeric](
         m: Matrix[T],
         zeros: Set[(Int, Int)],
@@ -213,4 +214,15 @@ object Munkres:
             case (row, col) => Left(row.length)
 
     /// transform N x M Matrix into N' x N' Matrix (where N' = max(N,M)) by padding with zeros
-    def padRectangle(matrix: Matrix[Double]): Matrix[Double] = ???
+    def padRectangle[T : FiniteRange : Numeric : ClassTag](matrix: Matrix[T]): Matrix[T] =
+        val rowCount = matrix.length
+        val colCount = matrix.foldLeft(0) { (maybeMaxCol, row) =>
+            math.max(row.length, maybeMaxCol)
+        }
+        val n = math.max(rowCount, colCount)
+        val tmp = matrix.map { row =>
+            row.appendedAll(Array.fill[T](n - row.length)(Numeric[T].zero))
+        }
+        (0 to n - rowCount - 1).foldLeft(tmp) { (acc, _) =>
+            acc.appended(Array.fill(n)(Numeric[T].zero))
+        }
