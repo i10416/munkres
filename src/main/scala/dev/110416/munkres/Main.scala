@@ -32,15 +32,11 @@ object Munkres:
         def minValue = Double.MinValue
 
     type Matrix[T] = Array[Array[T]]
-    def utility[T : FiniteRange : Numeric](matrix: Matrix[T]): T = ???
 
     def cost[T : Numeric : FiniteRange : ClassTag](matrix: Matrix[T]): T =
         minimize(matrix).foldLeft(Numeric[T].zero) { case (acc, (x, y)) =>
             acc + matrix(x)(y)
         }
-
-    /** return the combination that maximizes total utility */
-    def maximize[T : FiniteRange : ClassTag : Numeric](matrix: Matrix[T]): Seq[(Int, Int)] = ???
 
     /** returns the combination that minimizes total cost */
     def minimize[T : FiniteRange : ClassTag : Numeric](matrix: Matrix[T]): Seq[(Int, Int)] =
