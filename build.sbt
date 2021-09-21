@@ -4,8 +4,8 @@ val scala213 = "2.13.6"
 
 inThisBuild(
   Seq(
-    homepage := Some(url("https://github.com/ItoYo16u/munkres")),
-    organization := "dev.110416",
+    homepage := Some(url("https://github.com/i10416/munkres")),
+    organization := "dev.i10416",
     description := "Munkres Algorithm implementation for Scala",
     scalacOptions ++= Seq(
       "-deprecation"
