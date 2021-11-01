@@ -31,8 +31,9 @@ lazy val docs = project
     .in(file(".generated_docs"))
     .dependsOn(root)
     .settings(
+      scalaVersion := scala3Version,
       mdocIn := file("docs"),
-      mdocOut := file(".generated_docs"),
-      mdocVariables := Map[String, String]()
+      mdocVariables := Map[String, String](),
+      publish := none
     )
     .enablePlugins(MdocPlugin)
