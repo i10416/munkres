@@ -1,4 +1,4 @@
-package dev.`110416`.munkres
+package dev.i10416.munkres
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.flatspec.AnyFlatSpec
 import scala.language.postfixOps

@@ -1,4 +1,4 @@
-package dev.`110416`.munkres
+package dev.i10416.munkres
 
 import scala.annotation.tailrec
 
@@ -71,6 +71,8 @@ object Munkres:
 
             }
         }.toSet
+    
+
     /// find the locations where horizontal lines are crossed with vertical ones.
     private def getIntersections(
         rowLines: Seq[Int],
