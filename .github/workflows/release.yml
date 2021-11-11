@@ -2,7 +2,11 @@ name: Release
 on:
   push:
     branches: [master, main]
-    tags: ["*"]
+    tags: ["v*"]
+    paths-ignore:
+      - README.md
+
+
 jobs:
   publish:
     runs-on: ubuntu-20.04
