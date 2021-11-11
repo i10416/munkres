@@ -25,9 +25,9 @@ val matrix =  Array(
     Array(8,11, 2.0, 5),
     Array(9, 8, 6.0, 7))
   )
-Munkres.minimize(m)
+Munkres.minimize(matrix)
 // => List((2,2), (0,1), (3,0), (1,3))
-Munkres.cost(m)
+Munkres.cost(matrix)
 // 17
 ```
 
