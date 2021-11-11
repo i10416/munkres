@@ -1,6 +1,5 @@
 import Dependencies._
 val scala3Version = "3.1.0"
-credentials += Credentials(Path.userHome / ".sbt" / "sonatype_credentials")
 
 inThisBuild(
   Seq(
@@ -30,11 +29,6 @@ inThisBuild(
         "scm:git@github.com:i10416/munkres.git"
       )
     ),
-    publishTo := {
-        val nexus = "https://s01.oss.sonatype.org/"
-        if ((root/isSnapshot).value) Some("snapshots" at nexus + "content/repositories/snapshots")
-        else Some("releases" at nexus + "service/local/staging/deploy/maven2")
-    }
   )
 )
 
@@ -42,7 +36,6 @@ lazy val root = project
     .in(file("."))
     .settings(
       name := "munkres",
-      version := "0.0.1",
       scalaVersion := scala3Version,
       libraryDependencies ++= Dependencies.deps
     )
