@@ -33,6 +33,11 @@ Munkres.cost(matrix)
 // 17
 ```
 
+## How to contribute?
+- Give it a star⭐
+- Drop the feedback to the author @i10416
+- Send a PR with fixes of typos/bugs/etc🐛
+
 ## License
 Licensed under the Apache License, Version 2.0.
 
