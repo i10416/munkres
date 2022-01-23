@@ -1,5 +1,8 @@
 [![Release](https://github.com/i10416/munkres/actions/workflows/release.yml/badge.svg?branch=master)](https://github.com/i10416/munkres/actions/workflows/release.yml)
-[![Maven Central](https://img.shields.io/maven-central/v/dev.i10416/munkres_3.svg)](https://search.maven.org/artifact/dev.i10416/munkres_3)
+
+| scala 3 JVM | scala 3 JS| 
+|---|---|
+|[![Maven Central](https://img.shields.io/maven-central/v/dev.i10416/munkres_3.svg)](https://search.maven.org/artifact/dev.i10416/munkres_3)|[![Maven Central](https://img.shields.io/maven-central/v/dev.i10416/munkres_sjs1_3.svg)](https://search.maven.org/artifact/dev.i10416/munkres_sjs1_3)|
 
 ## Munkres(Hangarian) Algorithm Implimentation for Scala 3
 
@@ -15,7 +18,7 @@
 scalaVersion := "3.x.x"
 
 libraryDependencies ++= Seq(
-  "dev.i10416" %% "munkres" % "0.0.1"
+  "dev.i10416" %% "munkres" % "0.0.2"
 )
 ```
 ## Usage
