@@ -1,4 +1,5 @@
-[![Maven Central](https://maven-badges.herokuapp.com/maven-central/dev.i10416/munkres_3/badge.svg)](https://maven-badges.herokuapp.com/maven-central/dev.i10416/munkres_3)
+
+[![Maven Central](https://img.shields.io/maven-central/v/dev.i10416/munkres_3.svg)](https://search.maven.org/artifact/dev.i10416/munkres_3)
 
 ## Munkres(Hangarian) Algorithm Implimentation for Scala 3
 
