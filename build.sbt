@@ -1,4 +1,6 @@
 import Dependencies._
+import sbt._
+import sbtcrossproject.CrossPlugin.autoImport.crossProject
 val scala3Version = "3.1.0"
 
 inThisBuild(
@@ -7,6 +9,7 @@ inThisBuild(
     organization := "dev.i10416",
     description := "Munkres Algorithm implementation for Scala",
     scalacOptions ++= Seq(
+      "-feature",
       "-deprecation"
     ),
     licenses := Seq(
@@ -30,25 +33,35 @@ inThisBuild(
         url("https://github.com/i10416/munkres"),
         "scm:git@github.com:i10416/munkres.git"
       )
-    ),
+    )
   )
 )
-
+lazy val noPublishSettings = Seq(
+  publish / skip := true 
+)
 lazy val root = project
+    .in(file("."))
+    .aggregate(munkres.js, munkres.jvm)
+    .settings(noPublishSettings)
+lazy val munkres = crossProject(JSPlatform, JVMPlatform)
     .in(file("."))
     .settings(
       name := "munkres",
       scalaVersion := scala3Version,
       libraryDependencies ++= Dependencies.deps
     )
+    .jsSettings()
+    .jvmSettings(
+      libraryDependencies += "org.scala-js" %% "scalajs-stubs" % "1.1.0"
+    )
 
 lazy val docs = project
     .in(file(".generated_docs"))
-    .dependsOn(root)
+    .dependsOn(munkres.jvm, munkres.js)
     .settings(
       scalaVersion := scala3Version,
       mdocIn := file("docs"),
-      mdocVariables := Map[String, String](),
-      publish := none
+      mdocVariables := Map[String, String]()
     )
+    .settings(noPublishSettings)
     .enablePlugins(MdocPlugin)

@@ -1,6 +1,8 @@
 package dev.i10416.munkres
 
 import scala.annotation.tailrec
+import scala.scalajs.js.annotation.JSExportTopLevel
+import scala.scalajs.js.annotation.JSExport
 
 /** Munkres Algorithm (also known as Hungarian algorithm or the Kuhn-Munkres algorithm)
   * implementation for Scala
@@ -9,6 +11,7 @@ import scala.annotation.tailrec
   *   - https://csclab.murraystate.edu/~bob.pilgrim/445/munkres.html
   *   - https://github.com/bmc/munkres
   */
+@JSExportTopLevel("Munkres")
 object Munkres:
 
     import math.Numeric.Implicits.infixNumericOps
@@ -38,6 +41,7 @@ object Munkres:
             acc + matrix(x)(y)
         }
 
+    @JSExport
     /** returns the combination that minimizes total cost */
     def minimize[T : FiniteRange : ClassTag : Numeric](matrix: Matrix[T]): Seq[(Int, Int)] =
         val normalized = padRectangle(matrix)
