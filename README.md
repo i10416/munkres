@@ -1,4 +1,4 @@
-
+[![Release](https://github.com/i10416/munkres/actions/workflows/release.yml/badge.svg?branch=master)](https://github.com/i10416/munkres/actions/workflows/release.yml)
 [![Maven Central](https://img.shields.io/maven-central/v/dev.i10416/munkres_3.svg)](https://search.maven.org/artifact/dev.i10416/munkres_3)
 
 ## Munkres(Hangarian) Algorithm Implimentation for Scala 3
