@@ -1,7 +1,7 @@
 import Dependencies._
 import sbt._
 import sbtcrossproject.CrossPlugin.autoImport.crossProject
-val scala3Version = "3.1.0"
+val scala3Version = "3.1.1"
 
 inThisBuild(
   Seq(
@@ -37,7 +37,7 @@ inThisBuild(
   )
 )
 lazy val noPublishSettings = Seq(
-  publish / skip := true 
+  publish / skip := true
 )
 lazy val root = project
     .in(file("."))
