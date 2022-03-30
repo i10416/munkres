@@ -37,7 +37,7 @@ inThisBuild(
   )
 )
 lazy val noPublishSettings = Seq(
-  publish / skip := true 
+  publish / skip := true
 )
 lazy val root = project
     .in(file("."))

@@ -27,23 +27,23 @@ class MunkresTest extends AnyFlatSpec with Matchers:
     )
     // 3 x 3
     val m4 = Array(
-      Array(5,9,1),
-      Array(10,3,2),
-      Array(8,7,4)
+      Array(5, 9, 1),
+      Array(10, 3, 2),
+      Array(8, 7, 4)
     )
     // 3 x 3
     val m5 = Array(
-      Array(5.1,9.2,1.3),
-      Array(10.4,3.5,2.6),
-      Array(8.7,7.8,4.9)
+      Array(5.1, 9.2, 1.3),
+      Array(10.4, 3.5, 2.6),
+      Array(8.7, 7.8, 4.9)
     )
 
     val m6 = Array(
-      Array(12,9,27,10,23),
-      Array(7,13,13,30,19),
-      Array(25,18,26,11,26),
-      Array(9,28,26,23,13),
-      Array(16,16,24,6,9)
+      Array(12, 9, 27, 10, 23),
+      Array(7, 13, 13, 30, 19),
+      Array(25, 18, 26, 11, 26),
+      Array(9, 28, 26, 23, 13),
+      Array(16, 16, 24, 6, 9)
     )
 
     "Munkres.cost(nxn matrix)" should "calculate assignment cost" in {
@@ -72,4 +72,3 @@ class MunkresTest extends AnyFlatSpec with Matchers:
         afterPadding2.length shouldBe 7
         afterPadding2.forall(row => row.length == 7) shouldBe true
     }
-
