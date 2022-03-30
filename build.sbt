@@ -1,7 +1,7 @@
 import Dependencies._
 import sbt._
 import sbtcrossproject.CrossPlugin.autoImport.crossProject
-val scala3Version = "3.1.0"
+val scala3Version = "3.1.1"
 
 inThisBuild(
   Seq(
