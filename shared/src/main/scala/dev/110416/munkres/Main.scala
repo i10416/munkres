@@ -51,10 +51,10 @@ object Munkres:
 
         collectZerosFromMatrixRec(m, zeros, n, n)
 
-    /// return minimum values of each row as an array
+    // / return minimum values of each row as an array
     private def selectMinsFromRow[T : Numeric : ClassTag](matrix: Matrix[T]): Array[T] =
         matrix.map(a => a.min)
-    /// return minimum values of each column as an Array
+    // / return minimum values of each column as an Array
     private def selectMinsFromCol[T : Numeric : FiniteRange : ClassTag](
         matrix: Matrix[T]
     ): Array[T] =
@@ -64,7 +64,7 @@ object Munkres:
                     if value < maybeMin then value else maybeMin
                 }
         }
-    /// find all locations of zero as (row index,column index): (Int,Int)
+    // / find all locations of zero as (row index,column index): (Int,Int)
     private def selectZerosFromMatrix[T: Numeric](matrix: Matrix[T]): Set[(Int, Int)] =
         matrix.zipWithIndex.flatMap { (row, rowIdx) =>
             row.zipWithIndex.foldLeft(Set(): Set[(Int, Int)]) { case (acc, (value, colIdx)) =>
@@ -75,9 +75,8 @@ object Munkres:
 
             }
         }.toSet
-    
 
-    /// find the locations where horizontal lines are crossed with vertical ones.
+    // / find the locations where horizontal lines are crossed with vertical ones.
     private def getIntersections(
         rowLines: Seq[Int],
         colLines: Seq[Int]
@@ -153,7 +152,7 @@ object Munkres:
             zeros.diff(vertical).groupBy(_._1).filter(_._2.size == 1).size
         remainingIndependentZeroWhenHideRow <= remainingIndependentZeroWhenHideCol
 
-    /// find the line which hides the largest amount of zeros.
+    // / find the line which hides the largest amount of zeros.
     private def getTheLineToHide(
         zeros: Set[(Int, Int)]
     ): (Option[(Int, Set[(Int, Int)])], Option[(Int, Set[(Int, Int)])]) =
@@ -197,8 +196,8 @@ object Munkres:
                 collectZerosFromMatrixRec(next, nextZoros, rowCount, colCount)
 
     }
-    /// select zeros from identical (row,col), without using the same row or col more than once.
-    /// when right, return the locations where valid zeros exist. otherwise,returns the max line number available to hide zeros.
+    // / select zeros from identical (row,col), without using the same row or col more than once.
+    // / when right, return the locations where valid zeros exist. otherwise,returns the max line number available to hide zeros.
     private def tryCollectZerosFromMatrix(
         zeros: Set[(Int, Int)],
         rowCount: Int,
@@ -215,7 +214,7 @@ object Munkres:
                 Right(row.zip(col).map { case (r, c) => (r, c) })
             case (row, col) => Left(row.length)
 
-    /// transform N x M Matrix into N' x N' Matrix (where N' = max(N,M)) by padding with zeros
+    // / transform N x M Matrix into N' x N' Matrix (where N' = max(N,M)) by padding with zeros
     def padRectangle[T : FiniteRange : Numeric : ClassTag](matrix: Matrix[T]): Matrix[T] =
         val rowCount = matrix.length
         val colCount = matrix.foldLeft(0) { (maybeMaxCol, row) =>
