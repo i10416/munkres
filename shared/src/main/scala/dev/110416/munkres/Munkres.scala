@@ -4,6 +4,7 @@ import scala.annotation.tailrec
 import scala.scalajs.js.annotation.JSExportTopLevel
 import scala.scalajs.js.annotation.JSExport
 import scala.collection.mutable.{ Set => MSet }
+import java.util.LinkedList
 
 /** Munkres Algorithm (also known as Hungarian algorithm or the Kuhn-Munkres algorithm)
   * implementation for Scala
@@ -52,9 +53,14 @@ object Munkres:
 
         collectZerosFromMatrixRec(m, zeros, n, n)
 
-    // / return minimum values of each row as an array
+        // / return minimum values of each row as an array
     private def selectMinsFromRow[T : Numeric : ClassTag](matrix: Matrix[T]): Array[T] =
-        matrix.map(_.min)
+        val prealloc = Array.fill[T](matrix.length)(Numeric[T].zero)
+        var i = 0
+        while i < matrix.length do
+            prealloc(i) = matrix(i).min
+            i += 1
+        prealloc
     // / return minimum values of each column as an Array
     private def selectMinsFromCol[T : Numeric : FiniteRange : ClassTag](
         matrix: Matrix[T]
@@ -152,12 +158,11 @@ object Munkres:
 
     private def sortZeros(
         zeros: Set[(Int, Int)]
-    ): (Seq[(Int, Set[(Int, Int)])], Seq[(Int, Set[(Int, Int)])]) = {
+    ): (Seq[(Int, Set[(Int, Int)])], Seq[(Int, Set[(Int, Int)])]) =
         (
-          zeros.groupBy(_._1).toSeq.sortBy(e => -e._2.size),
-          zeros.groupBy(_._2).toSeq.sortBy(e => -e._2.size)
+          zeros.groupBy(_._1).toSeq.sortBy(-_._2.size),
+          zeros.groupBy(_._2).toSeq.sortBy(-_._2.size)
         )
-    }
 
     private def shouldHideRow(
         zeros: Set[(Int, Int)],
@@ -233,7 +238,9 @@ object Munkres:
             case (row, col) => Left(row.length)
 
     // / transform N x M Matrix into N' x N' Matrix (where N' = max(N,M)) by padding with zeros
-    def padRectangle[T : FiniteRange : Numeric : ClassTag](matrix: Matrix[T]): Matrix[T] =
+    private[munkres] def padRectangle[T : FiniteRange : Numeric : ClassTag](
+        matrix: Matrix[T]
+    ): Matrix[T] =
         val rowCount = matrix.length
         val colCount = matrix.foldLeft(0) { (maybeMaxCol, row) =>
             math.max(row.length, maybeMaxCol)

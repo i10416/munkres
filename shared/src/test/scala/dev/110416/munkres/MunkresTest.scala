@@ -3,7 +3,7 @@ import org.scalatest.matchers.should.Matchers
 import org.scalatest.flatspec.AnyFlatSpec
 import scala.language.postfixOps
 class MunkresTest extends AnyFlatSpec with Matchers:
-    "SelectZerosFromMatrix" should "find all zeros from matrix" in {
+    "helper: Munkres.selectZerosFromMatrix" should "find all zeros from matrix" in {
         val m0x0 = Array.empty[Array[Int]]
         val m2x2 = Array(
           Array(1, 0),
@@ -23,6 +23,25 @@ class MunkresTest extends AnyFlatSpec with Matchers:
         Munkres.selectZerosFromMatrix(m2x2) shouldBe Set((0, 1), (1, 0))
         Munkres.selectZerosFromMatrix(m3x3) shouldBe Set((0, 0), (1, 1), (2, 2))
         Munkres.selectZerosFromMatrix(m3x3WithoutZero) shouldBe Set.empty
+    }
+
+    "helper: Munkres.padRectangle(n x m matrix)" should "create n' x n' matrix where n' is max(n,m)" in {
+        val verticalRect = Array(
+          Array(1.0, 1.0),
+          Array(1.0, 1.0),
+          Array(1.0, 1.0),
+          Array(1.0)
+        )
+        val horizontalRect = Array(
+          Array(1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0),
+          Array(1.0, 1.0, 1.0, 1.0, 1.0, 1.0)
+        )
+        val afterPadding1 = munkres.padRectangle(verticalRect)
+        val afterPadding2 = munkres.padRectangle(horizontalRect)
+        afterPadding1.length shouldBe 4
+        afterPadding1.forall(row => row.length == 4) shouldBe true
+        afterPadding2.length shouldBe 7
+        afterPadding2.forall(row => row.length == 7) shouldBe true
     }
     val munkres = Munkres
     // 4 x 4
@@ -74,22 +93,4 @@ class MunkresTest extends AnyFlatSpec with Matchers:
         munkres.cost(m4) shouldBe 12.0
         munkres.cost(m5) shouldBe 13.5
         munkres.cost(m6) shouldBe 51.0
-    }
-    val verticalRect = Array(
-      Array(1.0, 1.0),
-      Array(1.0, 1.0),
-      Array(1.0, 1.0),
-      Array(1.0)
-    )
-    val horizontalRect = Array(
-      Array(1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0),
-      Array(1.0, 1.0, 1.0, 1.0, 1.0, 1.0)
-    )
-    val afterPadding1 = munkres.padRectangle(verticalRect)
-    val afterPadding2 = munkres.padRectangle(horizontalRect)
-    "Munkres.padRectangle(n x m matrix)" should "create n' x n' matrix where n' is max(n,m)" in {
-        afterPadding1.length shouldBe 4
-        afterPadding1.forall(row => row.length == 4) shouldBe true
-        afterPadding2.length shouldBe 7
-        afterPadding2.forall(row => row.length == 7) shouldBe true
     }
