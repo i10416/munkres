@@ -67,7 +67,12 @@ object Munkres:
         }
 
     // find all locations of zero as (row index,column index): (Int,Int)
-    private def selectZerosFromMatrix[T: Numeric](matrix: Matrix[T]): Set[(Int, Int)] =
+    // note that this function expect unitary matrix
+    //  0 a b
+    //  d 0 f
+    //  g h 0
+    //  => Set((0,0),(1,1),(2,2))
+    private[munkres] def selectZerosFromMatrix[T: Numeric](matrix: Matrix[T]): Set[(Int, Int)] =
         val size = matrix.length
         @tailrec
         def loopOverRowRec(rowIdx: Int, acc: MSet[(Int, Int)] = MSet.empty): MSet[(Int, Int)] =
