@@ -66,7 +66,7 @@ class MunkresTest extends AnyFlatSpec with Matchers:
     )
     val afterPadding1 = munkres.padRectangle(verticalRect)
     val afterPadding2 = munkres.padRectangle(horizontalRect)
-    "Munkres.padRectangle(nxm matrix)" should "create n'xn' matrix where n' is max(n,m)" in {
+    "Munkres.padRectangle(n x m matrix)" should "create n' x n' matrix where n' is max(n,m)" in {
         afterPadding1.length shouldBe 4
         afterPadding1.forall(row => row.length == 4) shouldBe true
         afterPadding2.length shouldBe 7

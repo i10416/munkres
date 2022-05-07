@@ -3,6 +3,7 @@ package dev.i10416.munkres
 import scala.annotation.tailrec
 import scala.scalajs.js.annotation.JSExportTopLevel
 import scala.scalajs.js.annotation.JSExport
+import scala.collection.mutable.{ Set => MSet }
 
 /** Munkres Algorithm (also known as Hungarian algorithm or the Kuhn-Munkres algorithm)
   * implementation for Scala
@@ -53,7 +54,7 @@ object Munkres:
 
     // / return minimum values of each row as an array
     private def selectMinsFromRow[T : Numeric : ClassTag](matrix: Matrix[T]): Array[T] =
-        matrix.map(a => a.min)
+        matrix.map(_.min)
     // / return minimum values of each column as an Array
     private def selectMinsFromCol[T : Numeric : FiniteRange : ClassTag](
         matrix: Matrix[T]
@@ -64,17 +65,29 @@ object Munkres:
                     if value < maybeMin then value else maybeMin
                 }
         }
-    // / find all locations of zero as (row index,column index): (Int,Int)
-    private def selectZerosFromMatrix[T: Numeric](matrix: Matrix[T]): Set[(Int, Int)] =
-        matrix.zipWithIndex.flatMap { (row, rowIdx) =>
-            row.zipWithIndex.foldLeft(Set(): Set[(Int, Int)]) { case (acc, (value, colIdx)) =>
-                if (value == 0.0)
-                    acc + ((rowIdx, colIdx))
-                else
-                    acc
 
-            }
-        }.toSet
+    // find all locations of zero as (row index,column index): (Int,Int)
+    private def selectZerosFromMatrix[T: Numeric](matrix: Matrix[T]): Set[(Int, Int)] =
+        val size = matrix.length
+        @tailrec
+        def loopOverRowRec(rowIdx: Int, acc: MSet[(Int, Int)] = MSet.empty): MSet[(Int, Int)] =
+            rowIdx match
+                case outOfBounds if outOfBounds >= size => acc
+                case rowIdx =>
+                    @tailrec
+                    def loopOverColRec(colIdx: Int, acc: MSet[(Int, Int)]): Unit =
+                        colIdx match
+                            case oob if oob >= size => ()
+                            case colIdx =>
+                                val elem = matrix(rowIdx)(colIdx)
+                                if Numeric[T].zero == elem
+                                then
+                                    acc.add((rowIdx, colIdx))
+                                    loopOverColRec(colIdx + 1, acc)
+                                else loopOverColRec(colIdx + 1, acc)
+                    loopOverColRec(0, acc)
+                    loopOverRowRec(rowIdx + 1, acc)
+        loopOverRowRec(0).toSet
 
     // / find the locations where horizontal lines are crossed with vertical ones.
     private def getIntersections(
