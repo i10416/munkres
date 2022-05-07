@@ -1,7 +1,7 @@
 import Dependencies._
 import sbt._
 import sbtcrossproject.CrossPlugin.autoImport.crossProject
-val scala3Version = "3.1.1"
+val scala3Version = "3.1.2"
 
 inThisBuild(
   Seq(
@@ -20,7 +20,7 @@ inThisBuild(
       Developer(
         "i10416",
         "Yoichiro ITO",
-        "ito.yo16uh90616+munkres@gmail.com",
+        "contact.110416+munkres@gmail.com",
         url("https://github.com/i10416")
       )
     ),
