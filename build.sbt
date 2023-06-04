@@ -1,7 +1,7 @@
 import Dependencies._
 import sbt._
 import sbtcrossproject.CrossPlugin.autoImport.crossProject
-val scala3Version = "3.1.2"
+val scala3Version = "3.3.0"
 
 inThisBuild(
   Seq(
@@ -10,7 +10,8 @@ inThisBuild(
     description := "Munkres Algorithm implementation for Scala",
     scalacOptions ++= Seq(
       "-feature",
-      "-deprecation"
+      "-deprecation",
+      "-unchecked",
     ),
     licenses := Seq(
       "Apache-2.0" -> url("http://www.apache.org/licenses/LICENSE-2.0")
